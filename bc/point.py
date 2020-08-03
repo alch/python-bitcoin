@@ -2,7 +2,7 @@ from __future__ import annotations
 
 
 class Point:
-    def __init__(self, x: float, y: float, a: float, b: float):
+    def __init__(self, x, y, a, b):
         self.a = a
         self.b = b
         self.x = x
@@ -58,9 +58,26 @@ class Point:
             x3 = s**2 - 2 * self.x
             y3 = s * (self.x - x3) - self.y
 
+
         return self.__class__(x3, y3, self.a, self.b)
 
+    def __rmul__(self, coefficient):
+        '''
+        Multiplication with binary expansion that allows us 
+        to perform multiplication in log2(n) loops
+        '''
+        coef = coefficient
+        current = self
+        result = self.__class__(None, None, self.a, self.b)
+        while coef:
+            if coef & 1:
+                result += current
+            current += current
+            coef >>= 1
+        return result
 
+    def __repr__(self):
+        return "Point_{}_{}_({}, {})".format(self.x, self.y, self.a, self.b)
 
 
         

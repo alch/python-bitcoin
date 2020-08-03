@@ -29,12 +29,21 @@ class TestFieldElement(unittest.TestCase):
         expected = FieldElement(8, 13)
         self.assertEqual(c, expected)
 
+    def test_rmul(self):
+        a = FieldElement(24, 31)
+        b = 2
+        self.assertEqual(b * a, a + a)
+
     def test_div(self):
-        a = FieldElement(3, 13)
-        b = FieldElement(7, 13)
-        c = a / b
-        expected = FieldElement(5, 13)
-        self.assertEqual(c, expected)
+        a = FieldElement(3, 31)
+        b = FieldElement(24, 31)
+        self.assertEqual(a / b, FieldElement(4, 31))
+        a = FieldElement(17, 31)
+        self.assertEqual(a**-3, FieldElement(29, 31))
+        a = FieldElement(4, 31)
+        b = FieldElement(11, 31)
+        self.assertEqual(a**-4 * b, FieldElement(13, 31))
+
 
     def test_pow(self):
         a = FieldElement(3, 13)

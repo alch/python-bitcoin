@@ -12,13 +12,13 @@ class FieldElement:
     def __repr__(self):
         return "FieldElement_{}({})".format(self.prime, self.num)
 
-    def __eq__(self, other: int) -> bool:
+    def __eq__(self, other: FieldElement) -> bool:
         if other is None:
             return False
         return self.num == other.num and self.prime == other.prime
 
-    def __ne__(self, other: int) -> bool:
-        return not self == other
+    def __ne__(self, other: FieldElement) -> bool:
+        return not (self == other)
 
     def __add__(self, other: FieldElement) -> FieldElement:
         if self.prime != other.prime:
@@ -38,19 +38,31 @@ class FieldElement:
         num = (self.num * other.num) % self.prime
         return self.__class__(num, self.prime)
 
+    def __rmul__(self, coefficient):
+        num = (self.num * coefficient) % self.prime
+        return self.__class__(num=num, prime=self.prime)
+
     def __truediv__(self, other: FieldElement) -> FieldElement:
         '''
         See Fermat's little theorem for the theory behind the
         finite field division: https://en.wikipedia.org/wiki/Fermat%27s_little_theorem
 
         Also note that modulo is not the reminder! See https://bit.ly/30lNfGE
+
+        self.num and other.num are the actual values
+        self.prime is what we need to mod against
+        use fermat's little theorem:
+        self.num**(p-1) % p == 1
+        this means:
+        1/n == pow(n, p-2, p)
         '''
         if self.prime != other.prime:
             raise TypeError("Cannot divide two numbers in different Fields")
-        num = pow(self.num * other.num, self.prime - 2) % self.prime
+        num = (self.num * pow(other.num, self.prime - 2, self.prime)) % self.prime
         return self.__class__(num, self.prime)
 
     def __pow__(self, exponent: int) -> FieldElement:
-        num = pow(self.num, exponent, self.prime)
+        n = exponent % (self.prime - 1)
+        num = pow(self.num, n, self.prime)
         return self.__class__(num, self.prime)
 
