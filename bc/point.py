@@ -64,7 +64,7 @@ class Point:
     def __rmul__(self, coefficient):
         '''
         Multiplication with binary expansion that allows us 
-        to perform multiplication in log2(n) loops
+        to perform multiplications in log2(n) loops
         '''
         coef = coefficient
         current = self
