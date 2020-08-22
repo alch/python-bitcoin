@@ -33,39 +33,44 @@ class Point:
 
         # When two points are additive inverses (that is, they have the same x but 
         # a different y, causing a vertical line) we should return the point at infinity.
-        if self.x == other.x and self.y - other.y == 0:
+        if self.x == other.x and self.y != other.y:
             return self.__class__(None, None, self.a, self.b)
 
         # Point Addition for When x1 != x2
         if self.x != other.x:
             # s is the slope of the line passing from P1 and P2
             s = (other.y - self.y) / (other.x - self.x)
-            x3 = s**2 - self.x - other.x
+            x3 = s ** 2 - self.x - other.x
             y3 = s * (self.x - x3) - self.y
 
         # Point addition when P1 == P2, meaning that the point
         # is tangent to the elliptical curve
         if self == other:
 
-            if self.y == 0:
+            if self.y == 0 * self.x:
+                # We cannot simply compare y == 0 (scalar), since
+                # if we are using finite fields instead of real numbers,
+                # the 0 value must also be a finite field. Mutiplying 0
+                # to an other finite field (like self.x) makes this zero
+                # coparison work both in real and finite fields
+
                 # Special case when the tangent is a vertical line,
                 # with undefined slope. The addition will return the
                 # Point at infinity
                 return self.__class__(None, None, self.a, self.b)
 
             # s is the slope of the tangent point P1 == P2 in the curve
-            s = (3*(self.x ** 2) + self.a) / 2 * self.y
-            x3 = s**2 - 2 * self.x
+            s = (3 * (self.x ** 2) + self.a) / (2 * self.y)
+            x3 = s ** 2 - 2 * self.x
             y3 = s * (self.x - x3) - self.y
-
 
         return self.__class__(x3, y3, self.a, self.b)
 
     def __rmul__(self, coefficient):
-        '''
-        Multiplication with binary expansion that allows us 
+        """
+        Multiplication with binary expansion that allows us
         to perform multiplications in log2(n) loops
-        '''
+        """
         coef = coefficient
         current = self
         result = self.__class__(None, None, self.a, self.b)
@@ -78,10 +83,3 @@ class Point:
 
     def __repr__(self):
         return "Point_{}_{}_({}, {})".format(self.x, self.y, self.a, self.b)
-
-
-        
-
-
-
-

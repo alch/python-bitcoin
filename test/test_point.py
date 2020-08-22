@@ -22,7 +22,6 @@ class TestPoint(unittest.TestCase):
         p2 = Point(None, None, 5, 7)
         p3 = p1 + p2
         self.assertEqual(p3, p1)
-        
 
     def test_add_tangent_point_zero_y(self):
         p1 = Point(-1, 0, 0, 1)
@@ -30,6 +29,7 @@ class TestPoint(unittest.TestCase):
         p3 = p1 + p2
         expected = Point(None, None, 0, 1)
         self.assertEqual(p3, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -43,7 +43,7 @@ class FieldElement:
         return self.__class__(num=num, prime=self.prime)
 
     def __truediv__(self, other: FieldElement) -> FieldElement:
-        '''
+        """
         See Fermat's little theorem for the theory behind the
         finite field division: https://en.wikipedia.org/wiki/Fermat%27s_little_theorem
 
@@ -55,7 +55,7 @@ class FieldElement:
         self.num**(p-1) % p == 1
         this means:
         1/n == pow(n, p-2, p)
-        '''
+        """
         if self.prime != other.prime:
             raise TypeError("Cannot divide two numbers in different Fields")
         num = (self.num * pow(other.num, self.prime - 2, self.prime)) % self.prime
