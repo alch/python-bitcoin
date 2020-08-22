@@ -1,6 +1,6 @@
 from bc.point import Point
 from bc.s256_field import S256Field
-from signature import Signature
+from bc.signature import Signature
 
 A = 0
 B = 7
